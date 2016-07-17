@@ -14,7 +14,7 @@ public class Game implements IGameLogic {
 	private Vector3f cameraInc;
 	
 	private static final float CAMERA_POS_STEP = 0.0000005f;
-	private static final float MOUSE_SENSITIVITY = 0.2f;
+	private static final float MOUSE_SENSITIVITY = 0.000002f;
 	
 	public Game(){
 		renderer = new Renderer();

@@ -28,27 +28,27 @@ public class MouseInput {
 	}
 	
 	public void init(Window window) {
-		glfwSetCursorPosCallback(window.getWindowHandle(), 
-				cursorPosCallback = new GLFWCursorPosCallback() {
-					public void invoke(long window, double xpos, double ypos) {
-						currentPos.x = xpos;
-						currentPos.y = ypos;
-					}
-				});
-		glfwSetCursorEnterCallback(window.getWindowHandle(),
-				cursorEnterCallback = new GLFWCursorEnterCallback() {
-					public void invoke(long window, boolean entered) {
-						inWindow = entered;
-					}
-				});
-		glfwSetMouseButtonCallback(window.getWindowHandle(), 
-				mouseButtonCallback = new GLFWMouseButtonCallback() {
-					public void invoke(long window, int button, int action, int mods) {
-						leftButtonPressed = button == GLFW_MOUSE_BUTTON_1 && action == GLFW_PRESS;
-						rightButtonPressed = button == GLFW_MOUSE_BUTTON_1 && action == GLFW_PRESS;
-					}
-				});
-	}
+        glfwSetCursorPosCallback(window.getWindowHandle(), 
+        		cursorPosCallback = new GLFWCursorPosCallback() {
+		            public void invoke(long window, double xpos, double ypos) {
+		                currentPos.x = xpos;
+		                currentPos.y = ypos;
+		            }
+		        });
+        glfwSetCursorEnterCallback(window.getWindowHandle(), 
+        		cursorEnterCallback = new GLFWCursorEnterCallback() {
+		            public void invoke(long window, boolean entered) {
+		                inWindow = entered;
+		            }
+		        });
+        glfwSetMouseButtonCallback(window.getWindowHandle(), 
+        		mouseButtonCallback = new GLFWMouseButtonCallback() {
+		            public void invoke(long window, int button, int action, int mods) {
+		                leftButtonPressed = button == GLFW_MOUSE_BUTTON_1 && action == GLFW_PRESS;
+		                rightButtonPressed = button == GLFW_MOUSE_BUTTON_2 && action == GLFW_PRESS;
+		            }
+		        });
+    }
 	
 	public Vector2f getDisplVec() {
 		return displVec;
@@ -72,6 +72,8 @@ public class MouseInput {
 				displVec.x = (float) dY;
 			}
 		}
+		previousPos.x = currentPos.x;
+		previousPos.y = currentPos.y;
 	}
 	
 	public boolean isLeftButtonPressed() {

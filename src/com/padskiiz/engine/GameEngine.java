@@ -42,6 +42,7 @@ public class GameEngine implements Runnable {
         window.init();
         timer.init();
         gameLogic.init(window);
+        mouseInput.init(window);
     }
 
     protected void gameLoop() {
