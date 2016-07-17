@@ -1,4 +1,4 @@
-package mineclone.main;
+package com.padskiiz.mineclone.main;
 
 import com.padskiiz.engine.*;
 

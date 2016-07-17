@@ -1,4 +1,4 @@
-package mineclone.main;
+package com.padskiiz.mineclone.main;
 
 import static org.lwjgl.opengl.GL11.*;
 import org.joml.Matrix4f;
