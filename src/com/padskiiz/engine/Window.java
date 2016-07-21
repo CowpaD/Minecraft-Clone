@@ -41,13 +41,8 @@ public class Window {
         if (!glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW");
         }
-
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         
-        glfwDefaultWindowHints(); // optional, the current window hints are already the default
+        glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GL_FALSE); // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GL_TRUE); // the window will be resizable
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -56,7 +51,7 @@ public class Window {
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
         // Create the window
-        windowHandle = glfwCreateWindow(width, height, title, NULL, NULL);
+        windowHandle = glfwCreateWindow(1200, 800, title, NULL, NULL);
         if (windowHandle == NULL) {
             throw new RuntimeException("Failed to create the GLFW window");
         }
@@ -105,9 +100,18 @@ public class Window {
 
         // Set the clear color
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        
+        //Draws closer faces last
         glEnable(GL_DEPTH_TEST);
+        
+        //Enables mesh view
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
 
+	public long getWindowHandle() {
+		return windowHandle;
+	}
+	
     public void setClearColor(float r, float g, float b, float alpha) {
         glClearColor(r, g, b, alpha);
     }
@@ -152,8 +156,4 @@ public class Window {
         glfwSwapBuffers(windowHandle);
         glfwPollEvents();
     }
-
-	public long getWindowHandle() {
-		return windowHandle;
-	}
 }

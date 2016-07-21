@@ -17,8 +17,11 @@ public class MouseInput {
 	private boolean leftButtonPressed = false;
 	private boolean rightButtonPressed = false;
 	
+	@SuppressWarnings("unused")
 	private GLFWCursorPosCallback cursorPosCallback;
+	@SuppressWarnings("unused")
 	private GLFWCursorEnterCallback cursorEnterCallback;
+	@SuppressWarnings("unused")
 	private GLFWMouseButtonCallback mouseButtonCallback;
 	
 	public MouseInput() {
