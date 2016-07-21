@@ -11,19 +11,15 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
 public class Mesh {
-	private static final Vector3f DEFAULT_COLOUR = new Vector3f(1.0f, 1.0f, 1.0f);
 	public final int vaoId;
 	private final List<Integer> vboIdList;
 	private final int vertexCount;
-	private Texture texture;
-	private Vector3f colour;
+	private Material material;
 	
 	public Mesh(float[] positions, float[] textCoords, float[] normals, int[] indices) {
-		colour = DEFAULT_COLOUR;
 		vertexCount = indices.length;
 		vboIdList = new ArrayList<Integer>();
 		
@@ -69,7 +65,24 @@ public class Mesh {
 		glBindVertexArray(0);
 	}
 	
+	public Material getMaterial() {
+		return this.material;
+	}
+	
+	public void setMaterial(Material material) {
+		this.material = material;
+	}
+	
+	public int getVaoId() {
+		return this.vaoId;
+	}
+	
+	public int getVertexCount() {
+		return this.vertexCount;
+	}
+	
 	public void render() {	
+		Texture texture = material.getTexture();
 		if (texture != null) {
             // Activate firs texture bank
             glActiveTexture(GL_TEXTURE0);
@@ -93,34 +106,6 @@ public class Mesh {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	
-	public boolean isTextured(){
-		return this.texture != null;
-	}
-	
-	public Texture getTexture() {
-        return this.texture;
-    }
-    
-    public void setTexture(Texture texture) {
-        this.texture = texture;
-    }
-    
-    public void setColour(Vector3f colour) {
-        this.colour = colour;
-    }
-
-    public Vector3f getColour() {
-        return this.colour;
-    }
-	
-	public int getVaoId(){
-		return vaoId;
-	}
-	
-	public int getVertexCount() {
-		return vertexCount;
-	}
-	
 	public void cleanUp() {
 		glDisableVertexAttribArray(0);
 		
@@ -129,6 +114,12 @@ public class Mesh {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
         for (int vboId : vboIdList) {
             glDeleteBuffers(vboId);
+        }
+        
+        //Delete texture
+        Texture texture = material.getTexture();
+        if (texture != null) {
+        	texture.cleanup();
         }
         
 		// Delete VAO

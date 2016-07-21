@@ -13,6 +13,9 @@ public class Game implements IGameLogic {
 	private Camera camera;
 	private Vector3f cameraInc;
 	
+	private Vector3f ambientLight;
+	private PointLight pointLight;
+	
 	private static final float CAMERA_POS_STEP = 0.0000005f;
 	private static final float MOUSE_SENSITIVITY = 0.000002f;
 	
@@ -26,13 +29,26 @@ public class Game implements IGameLogic {
 	public void init(Window window) throws Exception {
 		renderer.init(window);
 		
-		Texture texture = new Texture("/textures/grassblock.png");
+		float reflectance = 1f;
+		
 		Mesh mesh = OBJLoader.loadMesh("/models/cube.obj");
-		mesh.setTexture(texture);
+		Texture texture = new Texture("/textures/grassblock.png");
+		Material material = new Material(texture, reflectance);
+		
+		mesh.setMaterial(material);
 		GameItem gameItem = new GameItem(mesh);
 		gameItem.setScale(0.5f);
 		gameItem.setPosition(0, 0, -2);
         gameItems = new GameItem[]{gameItem};
+        
+        ambientLight = new Vector3f(0.3f, 0.3f, 0.3f);
+        Vector3f lightColour = new Vector3f(1, 1, 1);
+        Vector3f lightPos = new Vector3f(0, 0, 1);
+        float lightIntensity = 5.0f;
+        
+        pointLight = new PointLight(lightColour, lightPos, lightIntensity);
+        PointLight.Attenuation att = new PointLight.Attenuation(0.0f, 0.0f, 1.0f);
+        pointLight.setAttenuation(att);
 	}
 
 	@Override
@@ -51,10 +67,11 @@ public class Game implements IGameLogic {
 			cameraInc.x = 1;
 		}
 		
+		float lightPos = this.pointLight.getPosition().z;
 		if (window.isKeyPressed(GLFW_KEY_Z)) {
-			cameraInc.y = -1;
+			this.pointLight.getPosition().z = lightPos + 0.01f;
 		} else if (window.isKeyPressed(GLFW_KEY_X)) {
-			cameraInc.y = 1;
+			this.pointLight.getPosition().z = lightPos - 0.01f;
 		}
 	}
 
@@ -76,7 +93,7 @@ public class Game implements IGameLogic {
 
 	@Override
 	public void render(Window window) {
-		renderer.render(window, gameItems, camera);
+		renderer.render(window, gameItems, camera, ambientLight, pointLight);
 	}
 
 	@Override

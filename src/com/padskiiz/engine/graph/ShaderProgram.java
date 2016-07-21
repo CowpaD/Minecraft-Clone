@@ -34,6 +34,21 @@ public class ShaderProgram {
 		uniforms.put(uniformName, uniformLocation);
 	}
 	
+	public void createPointLightUniform(String uniformName) throws Exception {
+		createUniform(uniformName + ".colour");
+		createUniform(uniformName + ".position");
+		createUniform(uniformName + ".intensity");
+		createUniform(uniformName + ".att.constant");
+		createUniform(uniformName + ".att.linear");
+		createUniform(uniformName + ".att.exponent");
+	}
+	
+	public void createMaterialUniform(String uniformName) throws Exception {
+		createUniform(uniformName + ".colour");
+		createUniform(uniformName + ".useColour");
+		createUniform(uniformName + ".reflectance");
+	}
+	
 	public void setUniform(String uniformName, Matrix4f value) {
 		//Put matrix into float buffer
 		FloatBuffer fb = BufferUtils.createFloatBuffer(16);
@@ -47,6 +62,28 @@ public class ShaderProgram {
 	
 	public void setUniform(String uniformName, int value) {
 		glUniform1i(uniforms.get(uniformName), value);
+	}
+	
+	public void setUniform(String uniformName, float value) {
+		glUniform1f(uniforms.get(uniformName), value);
+	}
+	
+	public void setUniform(String uniformName, PointLight pointLight) {
+		setUniform(uniformName + ".colour", pointLight.getColour());
+		setUniform(uniformName + ".position", pointLight.getPosition());
+		setUniform(uniformName + ".intensity", pointLight.getIntensity());
+		
+		PointLight.Attenuation att = pointLight.getAttenuation();
+		
+		setUniform(uniformName + ".att.constant", att.getConstant());
+		setUniform(uniformName + ".att.linear", att.getLinear());
+		setUniform(uniformName + ".att.exponent", att.getExponent());
+	}
+	
+	public void setUniform(String uniformName, Material material) {
+		setUniform(uniformName + ".colour", material.getColour());
+		setUniform(uniformName + ".useColour", material.isTextured() ? 0 : 1);
+		setUniform(uniformName + ".reflectance", material.getReflectance());
 	}
 	
 	public void createVertexShader(String shaderCode) throws Exception {
